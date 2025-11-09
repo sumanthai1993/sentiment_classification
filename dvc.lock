@@ -1,0 +1,87 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/data/data_ingestion.py
+    deps:
+    - path: src/data/data_ingestion.py
+      hash: md5
+      md5: 4c2ed24ac43ada11957f79e93bb26daf
+      size: 749
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: f3154e78b81bd3146418d95adfe640e8.dir
+      size: 1006158
+      nfiles: 2
+  data_preprocessing:
+    cmd: python src/preprocessing/data_preprocessing.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: f3154e78b81bd3146418d95adfe640e8.dir
+      size: 1006158
+      nfiles: 2
+    - path: src/preprocessing/data_preprocessing.py
+      hash: md5
+      md5: 3bee53542944671f02ca128b2b0e2e62
+      size: 2573
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 249551a60ad97c7db869c517e24fa813.dir
+      size: 686113
+      nfiles: 2
+  feature_engineering:
+    cmd: python src/features/feature_engineering.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 249551a60ad97c7db869c517e24fa813.dir
+      size: 686113
+      nfiles: 2
+    - path: src/features/feature_engineering.py
+      hash: md5
+      md5: 27055085489e115860c35f5d8762bdb7
+      size: 1390
+    outs:
+    - path: data/interim
+      hash: md5
+      md5: f0a952cf48ab55f1d92311740ddd7dae.dir
+      size: 1422003
+      nfiles: 2
+  model_building:
+    cmd: python src/model/model_building.py
+    deps:
+    - path: data/interim
+      hash: md5
+      md5: f0a952cf48ab55f1d92311740ddd7dae.dir
+      size: 1422003
+      nfiles: 2
+    - path: src/model/model_building.py
+      hash: md5
+      md5: 9a205511217d4fd8fad3a05dc3c351cd
+      size: 701
+    outs:
+    - path: models
+      hash: md5
+      md5: 23ce1a4d7118cb2686fd2e15d39a88ac.dir
+      size: 20598
+      nfiles: 1
+  model_evaluation:
+    cmd: python src/model/model_evaluation.py
+    deps:
+    - path: models
+      hash: md5
+      md5: 23ce1a4d7118cb2686fd2e15d39a88ac.dir
+      size: 20598
+      nfiles: 1
+    - path: src/model/model_evaluation.py
+      hash: md5
+      md5: 0d16999de1e8321b88e49c723b840c35
+      size: 1185
+    outs:
+    - path: reports
+      hash: md5
+      md5: b58a8572668573477d2ddee74a86f23d.dir
+      size: 141
+      nfiles: 1
